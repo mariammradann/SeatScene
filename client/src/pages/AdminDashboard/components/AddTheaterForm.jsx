@@ -1,6 +1,29 @@
 import React, { useState } from 'react';
 import './Forms.css';
 
+const mockAddTheater = (formData) => {
+  // Simulate API delay
+  return new Promise(resolve => {
+    setTimeout(() => {
+      // Simulate a successful response
+      const newTheater = {
+        id: Date.now(), // Generate a unique ID for the new theater
+        ...formData,
+        capacity: parseInt(formData.capacity, 10),
+        screens: formData.screens.map(screen => ({
+          ...screen,
+          number: parseInt(screen.number, 10),
+          seats: parseInt(screen.seats, 10)
+        })),
+        dateAdded: new Date().toISOString(),
+      };
+      
+      console.log('Mock Data Added:', newTheater);
+      resolve(newTheater);
+    }, 500); // 500ms delay
+  });
+};
+
 const AddTheaterForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -59,22 +82,13 @@ const AddTheaterForm = ({ onClose, onSuccess }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/admin/theaters', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      // **BACKEND API CALL REMOVED, USING MOCK FUNCTION**
+      const data = await mockAddTheater(formData);
 
-      if (!response.ok) {
-        throw new Error('Failed to add theater');
-      }
-
-      const data = await response.json();
       onSuccess(data);
       onClose();
     } catch (error) {
+      // In a real mock scenario, you might throw an error from the mockAddTheater
       setError(error.message);
     } finally {
       setLoading(false);
@@ -184,4 +198,4 @@ const AddTheaterForm = ({ onClose, onSuccess }) => {
   );
 };
 
-export default AddTheaterForm; 
+export default AddTheaterForm;

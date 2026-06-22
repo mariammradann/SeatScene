@@ -1,24 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); /* Added a standard font */
 
-/* Only reset margin/padding and set background for the register container */
-.register-container {
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #1e2127 0%, #282c34 100%);
-  /* No overflow: hidden here! */
-}
-
-/* Main container with centered content */
+/* --- GLOBAL CONTAINER --- */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  margin: 0;
   padding: 20px;
+  background: linear-gradient(135deg, #1e2127 0%, #282c34 100%);
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif; /* Use a readable font for body */
 }
 
-/* Form container styling */
+/* --- FORM CONTAINER --- */
 .register-form-container {
   background: #ffffff;
   border-radius: 16px;
@@ -30,7 +26,6 @@
   transition: all 0.3s ease;
 }
 
-/* Form heading with custom font */
 .register-form-container h2 {
   font-family: 'Berkshire Swash', cursive;
   font-size: 1.8rem;
@@ -39,21 +34,51 @@
   margin: 0 0 24px;
 }
 
-/* Form layout */
+/* --- FORM LAYOUT --- */
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* Input group styling */
 .form-group {
   margin-bottom: 8px;
+  text-align: left; /* Align labels/icons to the left */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------- */
+/* --- ICON POSITIONING FIXES (CRITICAL ADDITIONS) --- */
+/* ---------------------------------------------------- */
+
+.input-with-icon {
+  position: relative; /* Container for absolute icon */
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-icon {
+  /* Absolute position inside the container */
+  position: absolute; 
+  left: 12px; /* Position from the left edge */
+  color: #999; /* Icon color */
+  font-size: 1.1rem;
+  z-index: 2; /* Ensure icon is above input field */
+  transition: color 0.3s ease;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
+  /* CRITICAL: Increased left padding to make space for the icon */
+  padding: 10px 10px 10px 40px; 
   border: 1px solid #d0d0d0;
   border-radius: 6px;
   font-size: 15px;
@@ -63,18 +88,24 @@
   transition: all 0.3s ease;
 }
 
+/* When the input is focused, change the input border and the icon color */
 .form-group input:focus {
   outline: none;
-  border-color: #28a745;
+  border-color: #7b1fa2;
   background: #ffffff;
-  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+  box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.15);
 }
 
-/* Register button styling */
+.input-with-icon input:focus ~ .input-icon {
+  color: #7b1fa2; /* Change icon color on focus */
+}
+
+
+/* --- BUTTONS & SWITCH --- */
 .register-button {
   width: 100%;
   padding: 12px;
-  background-color: #28a745;
+  background-color: #7b1fa2;
   color: white;
   border: none;
   border-radius: 6px;
@@ -85,16 +116,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px; /* Use gap for spacing icons/text */
 }
 
-.register-button::after {
-  content: '➜';
-  margin-left: 8px;
-  font-size: 14px;
-}
+/* Remove the ::after pseudo-element from the original, as the button now uses an <FaIcon /> */
+/* .register-button::after { content: '➜'; margin-left: 8px; font-size: 14px; } */
 
 .register-button:hover {
-  background-color: #1f8b38;
+  background-color: #9c27b0;
   transform: translateY(-1px);
 }
 
@@ -102,7 +131,12 @@
   transform: translateY(0);
 }
 
-/* Sign-in link section */
+.register-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .register-switch {
   text-align: center;
   margin-top: 16px;
@@ -111,18 +145,17 @@
 }
 
 .register-switch a {
-  color: #28a745;
+  color: #7b1fa2;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .register-switch a:hover {
-  color: #1f8b38;
+  color: #9c27b0;
   text-decoration: underline;
 }
 
-/* Error message styling */
 .error-message {
   background-color: #ffe6e8;
   color: #721c24;
@@ -134,7 +167,11 @@
   font-weight: 500;
 }
 
-/* Responsive Design */
+.button-icon {
+    font-size: 1.2rem;
+}
+
+/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 768px) {
   .register-container {
     padding: 15px;

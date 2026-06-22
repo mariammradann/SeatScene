@@ -1,67 +1,74 @@
+/* Auth CSS - Premium Glassmorphic Design */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 
 .auth-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 10vh;
-  background:#363942;
-  padding: 0;
+  flex-direction: column;
+  min-height: 100vh !important; /* Fill full viewport since #root padding is overridden to 0 by seating CSS */
+  background: radial-gradient(circle at top right, #382c4d 0%, #1a1b20 70%, #0d0e12 100%) !important;
+  padding: 104px 24px 40px !important; /* 104px top padding to clear the 64px header and add 40px spacing */
+  box-sizing: border-box !important;
+  width: 100% !important;
 }
 
+/* Translucent Glass Card */
 .auth-form-container {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2.5rem;
-  border-radius: 15px;
+  margin: auto; /* Centered in flex container, prevents top cutoff when content overflows */
+  background: rgba(30, 31, 38, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  margin: 0;
+  max-width: 420px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
 .auth-form-container:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
+  border-color: rgba(123, 31, 162, 0.35);
 }
 
 .auth-form-container h2 {
-  color: #1a1a1a;
+  color: #ffffff;
   text-align: center;
   margin-bottom: 1.5rem;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-family: 'Berkshire Swash', cursive;
+  font-weight: normal;
+  letter-spacing: 0.5px;
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 6px;
   width: 100%;
+  text-align: left;
 }
 
 .form-group label {
-  color: #333;
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: #99a2b3;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  display: block;
 }
 
-.form-group input {
-  padding: 1rem 1rem 1rem 3rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: white;
-  color: #333;
-  font-size: 1rem;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-
+/* --- Input with absolute positioned icon --- */
 .input-with-icon {
   position: relative;
   display: flex;
@@ -70,125 +77,159 @@
 }
 
 .input-icon {
- 
-padding-right: 10px;
-  color: #666;
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ab47bc; /* Neon purple */
+  font-size: 1.1rem;
+  z-index: 5;
+  pointer-events: none; /* Let clicks pass through to input */
+  transition: color 0.25s ease;
+}
+
+.form-group input {
+  width: 100% !important;
+  padding: 14px 16px 14px 44px !important; /* CRITICAL: 44px left padding so placeholder/text does not overlap the icon! */
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  box-sizing: border-box !important;
+  transition: all 0.25s ease !important;
+  font-family: 'Outfit', sans-serif !important;
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  outline: none !important;
+  border-color: #7b1fa2 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2) !important;
 }
 
-.form-group input:focus + .input-icon {
-  color: #4a90e2;
+.form-group input::placeholder {
+  color: #718096 !important;
+  opacity: 0.8 !important;
 }
 
+/* Change icon color on input focus (sibling selector) */
+.input-with-icon input:focus ~ .input-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 4px rgba(123, 31, 162, 0.6));
+}
+
+/* --- Premium Buttons & Auth Switch --- */
 .auth-button {
-  background-color: #28a745;
-  color: white;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
+  background: #7b1fa2 !important;
+  color: #ffffff !important;
+  padding: 14px 24px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+  margin-top: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  box-shadow: 0 8px 20px rgba(123, 31, 162, 0.25) !important;
+  font-family: 'Outfit', sans-serif !important;
 }
 
-.auth-button:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
+.auth-button:hover:not(:disabled) {
+  background: #9c27b0 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 25px rgba(123, 31, 162, 0.4) !important;
 }
 
-.auth-button:active {
-  transform: translateY(0);
+.auth-button:active:not(:disabled) {
+  transform: translateY(0) !important;
 }
 
 .auth-button:disabled {
-  background-color: #666;
-  cursor: not-allowed;
-  transform: none;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #718096 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 1.5rem;
-  color: #666;
+  color: #99a2b3;
+  font-size: 14px;
 }
 
 .auth-switch a {
-  color: #4a90e2;
+  color: #ab47bc;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .auth-switch a:hover {
+  color: #9c27b0;
   text-decoration: underline;
 }
 
 .error-message {
-  background-color: rgba(220, 53, 69, 0.1);
-  color: #dc3545;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  border: 1px solid #dc3545;
-  font-size: 0.9rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  font-size: 14px;
+  text-align: center;
 }
 
 .button-icon {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
-/* Toast Container Styles */
+/* Toast Container Styles overrides */
 .Toastify__toast-container {
   z-index: 9999;
 }
 
 .Toastify__toast {
-  border-radius: 8px;
-  font-family: inherit;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  background: #1e1f26 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .Toastify__toast--success {
-  background: #28a745;
+  border-left: 4px solid #10b981;
 }
 
 .Toastify__toast--error {
-  background: #dc3545;
+  border-left: 4px solid #ef4444;
 }
 
 .Toastify__toast--info {
-  background: #4a90e2;
+  border-left: 4px solid #7b1fa2;
 }
 
-.Toastify__toast-body {
-  font-size: 0.9rem;
-  padding: 0.5rem;
-}
-
-/* Responsive Design */
+/* Responsive design */
 @media (max-width: 480px) {
   .auth-container {
-    padding: 1rem;
+    padding: 20px 16px;
   }
 
   .auth-form-container {
-    padding: 1.5rem;
-    max-width: 95vw;
+    padding: 28px 20px;
+    max-width: 100%;
   }
 
   .auth-form-container h2 {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
   }
 }

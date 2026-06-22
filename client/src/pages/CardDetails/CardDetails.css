@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+/* --- Page and Main Card Styles (No Change) --- */
+
+.card-details-container {
+  background: #363942;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-family: 'Berkshire Swash', cursive;
+  padding: 1rem;
+}
+
+/* Main card container */
+.card-details-card {
+  background-color: #4b4f58;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 420px;
+  width: 95%;
+  margin: 2rem auto 1rem auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-details-card h1 {
+  text-align: center;
+  color: #ab47bc;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+/* --- Form Styles (No Change to layout structure for inputs) --- */
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+.payment-form label {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.payment-form input {
+  padding: 0.8rem;
+  border-radius: 5px;
+  border: 1px solid #4c4f5b;
+  background-color: white;
+  color: black;
+  font-family: inherit;
+  font-size: 1rem;
+  /* Added to ensure inputs don't exceed their parent's width */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.payment-form input:focus {
+  outline: none;
+  border-color: #7b1fa2;
+  box-shadow: 0 0 5px rgba(123, 31, 162, 0.5);
+}
+
+.payment-form input::placeholder {
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* --- MODIFIED Booking Summary (Ticket Info) --- */
+.booking-summary {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  /* Updated Background Color to a lighter grey for contrast, matching page colors */
+  background-color: #5c5f6a;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  font-family: 'Berkshire Swash', cursive;
+  color: white;
+  /* Ensure base text color is white */
+}
+
+.booking-summary h3 {
+  text-align: center;
+  color: #ab47bc;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.summary-item {
+  margin: 0.4rem 0;
+  /* Increased Font Size for better visibility */
+  font-size: 1.15rem;
+  color: #fff;
+}
+
+.highlight {
+  color: #ab47bc;
+  font-weight: bold;
+}
+
+.total-amount {
+  border-top: 1px solid #7b1fa2;
+  padding-top: 0.5rem;
+  margin-top: 0.6rem;
+  font-size: 1.25rem;
+  /* Slightly larger for total */
+}
+
+/* --- Buttons (No Change) --- */
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.back-button,
+.cancel-button,
+.pay-button {
+  border: none;
+  border-radius: 24px;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  /* Ensure the buttons are aligned properly, they appear to be stretching slightly in the image */
+  flex: 1;
+  margin: 0 0.5rem;
+  /* Add some margin between buttons */
+}
+
+/* ... rest of button styles and media queries ... */
+
+.back-button {
+  background-color: #4c4f5b;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.pay-button {
+  background-color: #7b1fa2;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: #7b1fa2;
+  transform: scale(1.05);
+}
+
+.cancel-button:hover {
+  background-color: #7b1fa2;
+  transform: scale(1.05);
+}
+
+.pay-button:hover {
+  background-color: #9c27b0;
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .card-details-card {
+    padding: 1.2rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+    /* Reset button margin for mobile stack */
+    margin: 0;
+  }
+
+  .back-button,
+  .cancel-button,
+  .pay-button {
+    width: 100%;
+    margin: 0;
+    /* Remove horizontal margin when stacked */
+  }
+}

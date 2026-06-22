@@ -1,6 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import './Forms.css';
 
+/**
+ * Mock function to simulate updating a theater on the backend.
+ * @param {object} theaterId - The ID of the theater being edited.
+ * @param {object} updatedData - The new form data.
+ * @returns {Promise<object>} A promise that resolves with the updated theater object.
+ */
+const mockUpdateTheater = (theaterId, updatedData) => {
+  return new Promise((resolve) => {
+    // Simulate API delay
+    setTimeout(() => {
+      console.log(`Mocking update for theater ID: ${theaterId}`);
+      
+      // Simulate the data returned by the backend after a successful update
+      const updatedTheater = {
+        // Keep the original ID, and spread the new form data
+        _id: theaterId,
+        ...updatedData,
+        // Ensure numbers are parsed correctly, simulating server-side validation/typing
+        capacity: parseInt(updatedData.capacity, 10),
+        screens: updatedData.screens.map(screen => ({
+            ...screen,
+            number: parseInt(screen.number, 10),
+            seats: parseInt(screen.seats, 10)
+        })),
+        message: 'Theater updated successfully (Mocked)',
+      };
+      
+      resolve(updatedTheater);
+    }, 500); // 500ms delay
+  });
+};
+
 const EditTheaterForm = ({ theater, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -18,7 +50,8 @@ const EditTheaterForm = ({ theater, onClose, onSuccess }) => {
         name: theater.name || '',
         location: theater.location || '',
         capacity: theater.capacity || '',
-        screens: theater.screens || [{ number: 1, seats: '' }],
+        // Ensure screens is an array, defaulting if necessary
+        screens: theater.screens && theater.screens.length > 0 ? theater.screens : [{ number: 1, seats: '' }],
         amenities: theater.amenities || []
       });
     }
@@ -42,9 +75,10 @@ const EditTheaterForm = ({ theater, onClose, onSuccess }) => {
   };
 
   const handleAddScreen = () => {
+    const newScreenNumber = formData.screens.length > 0 ? Math.max(...formData.screens.map(s => parseInt(s.number))) + 1 : 1;
     setFormData(prev => ({
       ...prev,
-      screens: [...prev.screens, { number: prev.screens.length + 1, seats: '' }]
+      screens: [...prev.screens, { number: newScreenNumber, seats: '' }]
     }));
   };
 
@@ -71,19 +105,9 @@ const EditTheaterForm = ({ theater, onClose, onSuccess }) => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/admin/theaters/${theater._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      // **BACKEND API CALL REMOVED, USING MOCK FUNCTION**
+      const data = await mockUpdateTheater(theater._id, formData);
 
-      if (!response.ok) {
-        throw new Error('Failed to update theater');
-      }
-
-      const data = await response.json();
       onSuccess(data);
       onClose();
     } catch (error) {
@@ -220,4 +244,4 @@ const EditTheaterForm = ({ theater, onClose, onSuccess }) => {
   );
 };
 
-export default EditTheaterForm; 
+export default EditTheaterForm;

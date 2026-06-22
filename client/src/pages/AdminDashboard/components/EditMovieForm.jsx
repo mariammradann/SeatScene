@@ -1,258 +1,67 @@
 import React, { useState } from 'react';
 import './Forms.css';
 
-const EditMovieForm = ({ movie, onClose, onSuccess }) => {
-  const [formData, setFormData] = useState({
-    title: movie.title || '',
-    description: movie.description || '',
-    duration: movie.duration || '',
-    genre: movie.genre || '',
-    releaseDate: movie.releaseDate || '',
-    posterUrl: movie.posterUrl || '',
-    capacity: movie.capacity || '',
-    screenType: movie.screenType || '2D',
-    amenities: movie.amenities || [],
-    showtimes: movie.showtimes || []
+/**
+ * Mock function to simulate deleting a movie.
+ * @param {string} movieId - The ID of the movie being deleted.
+ * @returns {Promise<object>} A promise that resolves with a success message.
+ */
+const mockDeleteMovie = (movieId) => {
+  return new Promise((resolve) => {
+    // Simulate network delay
+    setTimeout(() => {
+      console.log(`Mocking successful deletion for movie ID: ${movieId}`);
+      // Simulate the backend response indicating success
+      resolve({ 
+        message: `Movie with ID ${movieId} successfully deleted (Mocked).`,
+        deletedId: movieId 
+      });
+    }, 500); // 500ms delay
   });
-  const [newAmenity, setNewAmenity] = useState('');
-  const [newShowtime, setNewShowtime] = useState('');
-  const [error, setError] = useState(null);
+};
+
+const DeleteMovieButton = ({ movie, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleAddAmenity = () => {
-    if (newAmenity.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        amenities: [...prev.amenities, newAmenity.trim()]
-      }));
-      setNewAmenity('');
+  const handleDelete = async () => {
+    if (!window.confirm(`Are you sure you want to delete the movie: ${movie.title}?`)) {
+      return;
     }
-  };
 
-  const handleRemoveAmenity = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      amenities: prev.amenities.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleAddShowtime = () => {
-    if (newShowtime.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        showtimes: [...prev.showtimes, newShowtime.trim()]
-      }));
-      setNewShowtime('');
-    }
-  };
-
-  const handleRemoveShowtime = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      showtimes: prev.showtimes.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`/api/admin/movies/${movie._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      // **BACKEND API CALL REMOVED, USING MOCK FUNCTION**
+      // Call the mock function instead of the real API
+      const result = await mockDeleteMovie(movie._id);
 
-      if (!response.ok) {
-        throw new Error('Failed to update movie');
-      }
+      // Call the success handler, passing the ID of the deleted movie
+      // The parent component should now use this ID to update its local state (e.g., filter the movie out of its list)
+      onDeleteSuccess(movie._id);
 
-      const data = await response.json();
-      onSuccess(data);
-      onClose();
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      // Mock failure could be added to mockDeleteMovie if needed
+      setError('Mock deletion failed. See console for details.'); 
+      console.error('Mock Delete Error:', err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="form-overlay">
-      <div className="form-container">
-        <h2>Edit Movie</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="duration">Duration (minutes)</label>
-            <input
-              type="number"
-              id="duration"
-              name="duration"
-              value={formData.duration}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="genre">Genre</label>
-            <input
-              type="text"
-              id="genre"
-              name="genre"
-              value={formData.genre}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="releaseDate">Release Date</label>
-            <input
-              type="date"
-              id="releaseDate"
-              name="releaseDate"
-              value={formData.releaseDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="posterUrl">Poster URL</label>
-            <input
-              type="url"
-              id="posterUrl"
-              name="posterUrl"
-              value={formData.posterUrl}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="capacity">Capacity</label>
-            <input
-              type="number"
-              id="capacity"
-              name="capacity"
-              value={formData.capacity}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="screenType">Screen Type</label>
-            <select
-              id="screenType"
-              name="screenType"
-              value={formData.screenType}
-              onChange={handleChange}
-              required
-            >
-              <option value="2D">2D</option>
-              <option value="3D">3D</option>
-              <option value="IMAX">IMAX</option>
-              <option value="4DX">4DX</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Amenities</label>
-            <div className="amenities-input">
-              <input
-                type="text"
-                value={newAmenity}
-                onChange={(e) => setNewAmenity(e.target.value)}
-                placeholder="Add an amenity"
-              />
-              <button type="button" onClick={handleAddAmenity}>Add</button>
-            </div>
-            <div className="amenities-list">
-              {formData.amenities.map((amenity, index) => (
-                <span key={index} className="amenity-tag">
-                  {amenity}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveAmenity(index)}
-                    className="remove-amenity"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label>Showtimes</label>
-            <div className="list-input">
-              <input
-                type="text"
-                value={newShowtime}
-                onChange={(e) => setNewShowtime(e.target.value)}
-                placeholder="Add showtime (e.g., 10:00 AM)"
-              />
-              <button type="button" onClick={handleAddShowtime}>Add</button>
-            </div>
-            <div className="list-items">
-              {formData.showtimes.map((showtime, index) => (
-                <div key={index} className="list-item">
-                  <span>{showtime}</span>
-                  <button type="button" onClick={() => handleRemoveShowtime(index)}>×</button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="form-buttons">
-            <button type="submit" disabled={loading}>
-              {loading ? 'Updating...' : 'Update Movie'}
-            </button>
-            <button type="button" onClick={onClose} className="cancel-button">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
+    <div>
+      {error && <p className="error-message">{error}</p>}
+      <button 
+        onClick={handleDelete} 
+        disabled={loading}
+        className="delete-button" // Assuming a class for styling
+      >
+        {loading ? 'Deleting...' : 'Delete Movie'}
+      </button>
     </div>
   );
 };
 
-export default EditMovieForm; 
+export default DeleteMovieButton;

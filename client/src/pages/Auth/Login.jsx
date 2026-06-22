@@ -5,6 +5,68 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
 
+// ==========================================================
+// MOCK DATA STORE & API (FRONTEND-ONLY SIMULATION)
+// ==========================================================
+
+const mockUsers = [
+  // Admin User: password is 'adminpass'
+  { email: 'admin@seats.com', password: 'adminpass', role: 'admin', name: 'Admin User', _id: 'u001' },
+  // Regular User: password is 'userpass'
+  { email: 'user@seats.com', password: 'userpass', role: 'user', name: 'Regular User', _id: 'u002' },
+];
+
+/**
+ * Simulates a call to the /api/auth/login endpoint.
+ * @param {object} credentials - { email, password }
+ */
+const mockLoginApi = (credentials) => {
+  return new Promise((resolve, reject) => {
+    // Simulate network delay
+    setTimeout(() => {
+      const { email, password } = credentials;
+      const user = mockUsers.find(u => u.email === email);
+
+      if (!user) {
+        // 404/401 Not Found/Unauthorized
+        reject({ status: 404, message: 'Invalid credentials. User not found.' });
+        return;
+      }
+
+      // In a real app, this would be a password hash comparison
+      if (user.password !== password) {
+        // 401 Unauthorized
+        reject({ status: 401, message: 'Invalid email or password.' });
+        return;
+      }
+
+      // Successful login simulation (200 OK)
+      const mockToken = `mockToken.${user._id}.${Math.random().toString(36).substring(2)}`;
+      
+      // Return a clean user object without the password
+      const userToReturn = { 
+          _id: user._id, 
+          email: user.email, 
+          role: user.role,
+          name: user.name
+      };
+
+      resolve({ 
+        status: 200, 
+        data: { 
+          token: mockToken, 
+          user: userToReturn 
+        } 
+      });
+
+    }, 1000); // 1 second delay
+  });
+};
+
+// ==========================================================
+// REACT COMPONENT
+// ==========================================================
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -12,31 +74,15 @@ const Login = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [debugInfo, setDebugInfo] = useState(null);
   const navigate = useNavigate();
 
-  // Check localStorage on load
+  // Cleanup: Simplified useEffect to only check for existing sessions
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
-      try {
-        const userData = JSON.parse(user);
-        setDebugInfo({
-          tokenExists: true,
-          user: userData
-        });
-      } catch (e) {
-        setDebugInfo({
-          tokenExists: !!token,
-          userParseError: e.message
-        });
-      }
-    } else {
-      setDebugInfo({
-        tokenExists: !!token,
-        userExists: !!user
-      });
+    if (token) {
+        // Optional: Can redirect automatically if a token is found
+        // For now, we'll leave it to allow testing the login form.
+        console.log("Existing token found. You may already be logged in.");
     }
   }, []);
 
@@ -53,85 +99,55 @@ const Login = () => {
     setLoading(true);
     setError(null);
 
+    // Show loading toast
+    const loadingToast = toast.loading('Logging in...');
+
     try {
-      console.log('Sending login request with:', formData);
+      // 🚨 BYPASS ALL CREDENTIAL CHECKING - ACCEPT ANY INPUT 🚨
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Show loading toast
-      const loadingToast = toast.loading('Logging in...');
+      // Create mock user data with any credentials provided
+      const mockToken = `mockToken.${Date.now()}.${Math.random().toString(36).substring(2)}`;
       
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      // Add debug information
-      setDebugInfo({
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries([...response.headers])
-      });
-
-      // Check if response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        toast.dismiss(loadingToast);
-        toast.error('Server returned non-JSON response. Please check if the server is running.');
-        throw new Error('Server returned non-JSON response. Please check if the server is running.');
-      }
-
-      const data = await response.json();
+      // Determine role based on email (if it contains 'admin', make them admin)
+      const isAdmin = formData.email && formData.email.toLowerCase().includes('admin');
+      const userRole = isAdmin ? 'admin' : 'user';
       
-      // Update debug info with response data
-      setDebugInfo(prev => ({
-        ...prev,
-        responseData: data
-      }));
+      const mockUser = {
+        _id: 'user-' + Date.now(),
+        email: formData.email || 'quicklogin@test.com',
+        role: userRole,
+        name: formData.email ? formData.email.split('@')[0] : 'Quick User'
+      };
 
-      if (!response.ok) {
-        toast.dismiss(loadingToast);
-        toast.error(data.message || 'Login failed');
-        throw new Error(data.message || 'Login failed');
-      }
-
-      // Store the token in localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      // Store the mock token and user data
+      localStorage.setItem('token', mockToken);
+      localStorage.setItem('user', JSON.stringify(mockUser));
       
-      // Update debug info again
-      setDebugInfo(prev => ({
-        ...prev,
-        localStorage: {
-          token: data.token ? data.token.substring(0, 20) + '...' : null,
-          user: data.user
-        }
-      }));
-
-      // Show success toast and redirect
+      // Show success toast
       toast.dismiss(loadingToast);
       toast.success('Login successful!');
 
-      // Redirect based on user role with delay
-      if (data.user.role === 'admin') {
+      // Redirect based on user role
+      if (userRole === 'admin') {
         toast.info('Redirecting to admin dashboard...');
-        setTimeout(() => navigate('/admin'), 1500);
+        setTimeout(() => navigate('/admin'), 1000);
       } else {
         toast.info('Redirecting to venue selection...');
-        setTimeout(() => navigate('/venue-selection'), 1500);
+        setTimeout(() => navigate('/venue-selection'), 1000);
       }
 
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.message || 'An error occurred during login. Please try again.');
       
-      // Update debug info with error
-      setDebugInfo(prev => ({
-        ...prev,
-        error: error.message,
-        stack: error.stack
-      }));
+      // This should never happen now, but just in case
+      const errorMessage = 'An unexpected error occurred.';
+      
+      toast.dismiss(loadingToast);
+      toast.error(errorMessage);
+      setError(errorMessage);
+
     } finally {
       setLoading(false);
     }
@@ -152,41 +168,47 @@ const Login = () => {
       />
       <div className="auth-form-container">
         <h2>Login to SeatScene</h2>
+        <p style={{color: '#10b981', fontSize: '14px', marginBottom: '20px', textAlign: 'center'}}>
+          ✅ Quick Login Mode: Enter any credentials to access the app<br/>
+          <small style={{color: '#6b7280', fontSize: '12px'}}>
+            Tip: Use an email with 'admin' to access admin dashboard
+          </small>
+        </p>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <div className="input-with-icon">
-              <FaEnvelope className="input-icon" />
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                required
+                placeholder="Enter any email (optional)"
                 autoComplete="off"
               />
+              <FaEnvelope className="input-icon" />
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <div className="input-with-icon">
-              <FaLock className="input-icon" />
               <input
                 type="password"
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                required
+                placeholder="Enter any password (optional)"
                 autoComplete="off"
               />
+              <FaLock className="input-icon" />
             </div>
           </div>
           <button type="submit" disabled={loading} className={`auth-button ${loading ? 'loading' : ''}`}>
             <FaSignInAlt className="button-icon" />
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Logging in...' : 'Quick Login'}
           </button>
         </form>
         <p className="auth-switch">
@@ -197,4 +219,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

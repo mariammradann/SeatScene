@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+/* --- BACK BUTTON VARIABLES --- */
+:root {
+  /* Variables taken from back-button.css */
+  --back-btn-size: 40px;
+  --back-btn-bg: rgba(0,0,0,0.65);
+  --back-btn-color: #fff;
+  --back-btn-radius: 6px;
+  --fade-duration: 280ms;
+}
+
+/* --- GLOBAL STYLES (from back-button.css and NavHeader.css) --- */
+html, body {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+/* Ensure content starts below the fixed header (64px) */
+/* The header is 64px, so body content needs 64px top padding */
+body, #root {
+  padding-top: 64px;
+  box-sizing: border-box;
+}
+
+/* Fade-out class added before leaving the page (from back-button.css) */
+.site-fade-out {
+  opacity: 0;
+  transition: opacity var(--fade-duration) ease;
+}
+
+/* --- NAV HEADER STYLES (Fixed Header) --- */
+.nav-header {
+  position: fixed; /* Making the header fixed */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(18, 20, 26, 0.75) !important; /* Glassmorphic transparent dark background */
+  backdrop-filter: blur(12px) !important; /* Blur effect on scroll */
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; /* Subtle bottom border */
+  padding: 0 32px;
+  font-family: 'Berkshire Swash', cursive;
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
+  box-sizing: border-box;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 0;
+  margin-top: 0;
+  /* Add margin to account for the fixed back button on the left */
+  margin-left: 56px; 
+}
+
+.logo-img {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  /* Adds a subtle white outline to make the dark text readable on dark backgrounds */
+  filter: drop-shadow(0px 0px 1.5px rgba(255, 255, 255, 0.85)) drop-shadow(0px 0px 1.5px rgba(255, 255, 255, 0.85)) brightness(1.1);
+  transition: filter 0.25s ease;
+}
+
+.logo-img:hover {
+  /* Neon purple glow effect on hover */
+  filter: drop-shadow(0px 0px 4px rgba(123, 31, 162, 0.8)) brightness(1.2);
+}
+
+/* --- BACK BUTTON UI (from back-button.css) --- */
+#back-btn {
+  position: fixed; 
+  left: 16px;
+  top: 16px; /* Positions the button within the fixed 64px header */
+  width: var(--back-btn-size);
+  height: var(--back-btn-size);
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ab47bc !important; /* Brand purple color */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--back-btn-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  transition: transform 150ms ease, background 150ms, border-color 150ms, color 150ms;
+}
+
+#back-btn:hover {
+  transform: translateY(-2px);
+  border-color: #7b1fa2 !important;
+  background: #7b1fa2 !important;
+  color: #ffffff !important;
+}
+#back-btn:active { transform: translateY(0); }
+#back-btn .label { display: none; font-size: 14px; margin-left: 8px; }
+
+/* optional larger screens show label */
+@media (min-width: 600px) {
+  /* Make the header padding wider for fixed elements on larger screens */
+  .nav-header { padding: 0 40px; } 
+
+  #back-btn { padding: 0 10px; width: auto; height: 36px; border-radius: 20px; }
+  #back-btn .label { display: inline-block; }
+  #back-btn .icon { margin-right: 6px; }
+  /* Readjust logo section margin if the back button expands */
+  .logo-section { margin-left: 120px; } 
+}
+
+
+/* --- PROFILE BUTTON STYLES (from NavHeader.css) --- */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  background-color: #666;
+  color: #fff;
+  border: 2px solid #7b1fa2;
+  border-radius: 24px;
+  padding: 10px 28px;
+  font-size: 1.1rem;
+  font-family: 'Berkshire Swash', cursive;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.profile-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(123, 31, 162, 0.18);
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 24px;
+}
+
+.profile-btn:hover {
+  background-color: #7b1fa2;
+  color: #fff;
+  border-color: #6b188f;
+}
+
+.profile-icon {
+  margin-right: 10px;
+  font-size: 1.2em;
+  z-index: 2;
+  /* Use the Font Awesome icon from the JSX instead of the default character */
+  font-family: 'Font Awesome 5 Free'; 
+}
+
+.profile-btn span, .profile-btn {
+  position: relative;
+  z-index: 2;
+}

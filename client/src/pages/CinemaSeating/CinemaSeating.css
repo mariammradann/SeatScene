@@ -1,242 +1,293 @@
-@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+/* Cinema Seating - Dark Theme, Full Desktop Width (Matching UserProfile) */
+
+/* Force full-width layout - override App.css constraints */
+#root {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
 
 body {
-  min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: #363942;
-  background-attachment: fixed; /* background stays fixed */
-  overflow-x: hidden; /* Prevent horizontal scroll, but allow vertical */
-  font-family: 'Berkshire Swash', cursive;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
 }
 
-.fixed-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 64px;
-  z-index: 1000;
-  background: #222;
-}
-
-.main-content {
-  margin-top: 64px; /* To avoid being hidden under the fixed header */
-  width: 100vw;
-  min-height: calc(100vh - 64px);
-  /* No overflow: hidden here! */
-}
-
-/* Override for screen label */
-.screen {
-  font-family: Arial, Helvetica, sans-serif !important;
-}
-
-/* Override for seat numbers and row labels */
-.seat,
-.row-label {
-  font-family: Arial, Helvetica, sans-serif !important;
-}
-
-.seating-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #1a1a1a;
-  color: white;
+.cinema-seating-wrapper {
   min-height: 100vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-.seating-title {
+/* Header gradient banner style */
+.cinema-header-banner {
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  /* Visual placeholder if we want a distinct header area, 
+     though the body is already this gradient. 
+     We can make it slightly different or just keep the structure. */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+/* Main content card layer */
+.cinema-main-card {
+  margin: -60px auto 0;
+  /* Overlap the banner */
+  background: transparent;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1200px;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Cinema Info Header */
+.cinema-info {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #fff;
+  margin-bottom: 50px;
 }
 
-.movie-details {
-  text-align: center;
-  margin-bottom: 2rem;
+.cinema-info h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.movie-info {
-  font-size: 1.5rem;
-  color: #fff;
-  margin-bottom: 0.5rem;
-}
-
-.showtime-info {
-  font-size: 1.2rem;
-  color: #ccc;
+.cinema-info p {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  opacity: 0.9;
 }
 
 /* Screen */
-.screen-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
 .screen {
-  width: 80%;
-  height: 40px;
-  background: linear-gradient(to bottom, #fff, #ccc);
+  background: linear-gradient(to bottom, #fff, #aaa);
+  color: #444;
+  text-align: center;
+  padding: 12px;
+  margin: 0 auto 60px;
+  width: 60%;
+  max-width: 600px;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  transform: perspective(600px) rotateX(-10deg);
+  text-transform: uppercase;
 }
 
-/* Seating chart */
-.seating-chart {
+/* Seats */
+.seats-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 40px;
 }
 
 .seat-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  margin: 8px 0;
 }
 
 .row-label {
-  color: #ccc;
-  width: 20px;
+  width: 30px;
   text-align: center;
+  font-size: 1rem;
+  color: #e0e0e0;
+  font-weight: 600;
+  margin-right: 20px;
+  opacity: 0.8;
+}
+
+.seats {
+  display: flex;
+  gap: 12px;
 }
 
 .seat {
-  width: 30px;
-  height: 30px;
-  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: #444;
+  font-size: 12px;
   color: white;
+  position: relative;
 }
 
+/* Seat Styles */
 .seat.available {
-  background-color: #666;
-}
-
-.seat.available:hover {
-  background-color: #888;
-}
-
-.seat.selected {
-  background-color: #7b1fa2;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .seat.vip {
-  background-color: #ffd700;
+  background: linear-gradient(135deg, #ffd700 0%, #fdb931 100%);
   color: #333;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+  border: none;
 }
 
-.seat.vip.selected {
-  background-color: #7b1fa2;
-  color: white;
-}
-
-.seat.unavailable {
-  background-color: #333;
+.seat.booked {
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
   cursor: not-allowed;
-  opacity: 0.5;
+  pointer-events: none;
+}
+
+.seat.selected {
+  background: #7b1fa2;
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.6);
+  transform: translateY(-5px);
+  z-index: 10;
+  border: none;
+}
+
+.seat:not(.booked):not(.selected):hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
 /* Legend */
-.seat-legend {
+.legend {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 30px;
+  margin: 40px auto;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 50px;
+  width: fit-content;
+  backdrop-filter: blur(10px);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #f0f0f0;
 }
 
-/* Selection summary */
-.selection-summary {
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Booking Summary */
+.booking-summary {
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 40px auto 20px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.price-summary {
-  font-size: 1.2rem;
-  color: #7b1fa2;
-  font-weight: bold;
+.booking-summary p {
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin: 0 0 25px 0;
+  font-weight: 500;
 }
 
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.back-button,
-.cancel-button,
-.confirm-button {
-  padding: 0.75rem 1.5rem;
+.book-button {
+  background: linear-gradient(45deg, #7b1fa2 0%, #ab47bc 100%);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  padding: 15px 50px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
+  box-shadow: 0 10px 20px rgba(123, 31, 162, 0.4);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.back-button {
-  background-color: #666;
-  color: white;
+.book-button:hover {
+  background: #9c27b0;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(123, 31, 162, 0.5);
 }
 
-.back-button:hover {
-  background-color: #888;
+.book-button:active {
+  transform: translateY(-1px);
 }
 
-.cancel-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.cancel-button:hover {
-  background-color: #c82333;
-}
-
-.confirm-button {
-  background-color: #7b1fa2;
-  color: white;
-}
-
-.confirm-button:hover:not(:disabled) {
-  background-color: #9c27b0;
-}
-
-.confirm-button:disabled {
-  background-color: #666;
+.book-button:disabled {
+  background: linear-gradient(45deg, #555 0%, #777 100%);
+  box-shadow: none;
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
-.loading-message,
-.error-message,
-.no-seats-message {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: #ccc;
-}
+/* Screen size adjustments */
+@media (max-width: 768px) {
+  .cinema-header-banner {
+    height: 100px;
+  }
 
-.error-message {
-  color: #dc3545;
+  .cinema-main-card {
+    padding-top: 20px;
+  }
+
+  .screen {
+    width: 80%;
+  }
+
+  .seat {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+    border-radius: 6px;
+  }
+
+  .seats {
+    gap: 8px;
+  }
+
+  .row-label {
+    margin-right: 10px;
+    font-size: 0.9rem;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    border-radius: 20px;
+    gap: 15px;
+    padding: 15px;
+  }
 }

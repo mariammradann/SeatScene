@@ -62,8 +62,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+  border-color: #7b1fa2;
+  box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.15);
 }
 
 .form-group textarea {
@@ -92,7 +92,7 @@
 .checkbox-group input[type="checkbox"] {
   width: auto;
   margin: 0;
-  accent-color: #4a90e2;
+  accent-color: #7b1fa2;
 }
 
 .form-buttons {
@@ -104,22 +104,23 @@
 .form-buttons button {
   padding: 0.85rem 1.5rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.25s ease;
   font-weight: 600;
 }
 
 .form-buttons button[type="submit"] {
-  background-color: #4a90e2;
+  background-color: #7b1fa2;
   color: white;
   flex: 1;
 }
 
 .form-buttons button[type="submit"]:hover {
-  background-color: #357abd;
-  transform: translateY(-1px);
+  background-color: #9c27b0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.4);
 }
 
 .form-buttons button[type="submit"]:disabled {
@@ -136,7 +137,8 @@
 
 .cancel-button:hover {
   background-color: #444;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .error-message {

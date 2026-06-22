@@ -4,13 +4,17 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/UserProfile/UserProfile';
 import Admin from './pages/AdminDashboard/Admin';
-import NavHeader from './componets/NavHeader';
+import NavHeader from './pages/Shared/NavHeader';
+import TheaterSeating from './pages/TheaterSeating/TheaterSeating';
 import CinemaMovies from './pages/CinemaMovies/CinemaMovies';
 import CinemaSeating from './pages/CinemaSeating/CinemaSeating';
 import Homepage from './pages/homepage/home';
 import VenueSelection from './pages/VenueSelection/VenueSelection';
 import TheaterShows from './pages/TheaterShows/TheaterShows';
 import LocationSelection from './pages/LocationSelection/LocationSelection';
+import Payment from './pages/Payment/Payment';
+import CardDetails from './pages/CardDetails/CardDetails';
+import Confirmation from './pages/Confirmation/Confirmation';
 
 function AppContent() {
   const location = useLocation();
@@ -19,19 +23,23 @@ function AppContent() {
   return (
     <>
       {!isHome && <NavHeader />}
+
       <Routes>
-        {/* Public routes */}
+        {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* Protected routes */}
-        <Route
-          path="/movies"
-          element={
-            <ProtectedRoute>
-              <CinemaMovies />
-            </ProtectedRoute>
-          }
-        />
+
+        {/* Public pages */}
+        <Route path="/" element={<Homepage />} />
+        <Route path="/venue-selection" element={<VenueSelection />} />
+        <Route path="/location-selection" element={<LocationSelection />} />
+        <Route path="/theater-shows" element={<TheaterShows />} />
+        <Route path="/cinema" element={<CinemaMovies />} />
+        <Route path="/cinema-seating" element={<CinemaSeating />} />
+        <Route path="/CinemaSeating" element={<CinemaSeating />} />
+        <Route path="/theater-shows" element={<TheaterShows />} />
+
+        {/* Protected pages */}
         <Route
           path="/theater"
           element={
@@ -40,22 +48,67 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        {/* seating routes (keep several aliases for backward compatibility) */}
         <Route
           path="/seating"
           element={
             <ProtectedRoute>
-              <CinemaSeating />
+              <TheaterSeating />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/theater-seating/:showId"
+          path="/theater-seating"
           element={
             <ProtectedRoute>
-              {/* TheaterSeating removed */}
+              <TheaterSeating />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/TheaterSeating"
+          element={
+            <ProtectedRoute>
+              <TheaterSeating />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/TheaterSeating/:showId"
+          element={
+            <ProtectedRoute>
+              <TheaterSeating />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Booking / Payment */}
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <Payment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/card-details"
+          element={
+            <ProtectedRoute>
+              <CardDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/confirmation"
+          element={
+            <ProtectedRoute>
+              <Confirmation />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User & Admin */}
         <Route
           path="/profile"
           element={
@@ -64,7 +117,6 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-        {/* Admin routes */}
         <Route
           path="/admin/*"
           element={
@@ -73,40 +125,39 @@ function AppContent() {
             </AdminRoute>
           }
         />
-        {/* Homepage route */}
-        <Route path="/" element={<Homepage />} />
-        <Route path="/venue-selection" element={<VenueSelection />} />
-        <Route path="/location-selection" element={<LocationSelection />} />
+
+        {/* Legacy/aliases */}
+        <Route path="/movies" element={<Navigate to="/cinema" replace />} />
+        <Route path="/shows" element={<Navigate to="/theater" replace />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<div style={{ padding: 40, textAlign: 'center' }}>Page not found</div>} />
       </Routes>
     </>
   );
 }
 
-// Protected Route component
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   if (!token) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
   return children;
 };
 
-// Admin Route component
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   if (!token || user.role !== 'admin') {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
   return children;
 };
 
-function App() {
+export default function App() {
   return (
     <Router>
       <AppContent />
     </Router>
   );
 }
-
-export default App;

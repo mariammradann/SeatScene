@@ -1,3 +1,4 @@
+// src/components/AddMovieForm.jsx
 import React, { useState } from 'react';
 import './Forms.css';
 
@@ -12,7 +13,7 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     capacity: '',
     screenType: '2D',
     amenities: [],
-    showtimes: []
+    showtimes: [],
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,32 +23,49 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: files[0]
+        [name]: files[0],
       }));
     } else {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
   const handleAddAmenity = () => {
     if (newAmenity.trim()) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        amenities: [...prev.amenities, newAmenity.trim()]
+        amenities: [...prev.amenities, newAmenity.trim()],
       }));
       setNewAmenity('');
     }
   };
 
   const handleRemoveAmenity = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      amenities: prev.amenities.filter((_, i) => i !== index)
+      amenities: prev.amenities.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleAddShowtime = () => {
+    if (newShowtime.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        showtimes: [...prev.showtimes, newShowtime.trim()],
+      }));
+      setNewShowtime('');
+    }
+  };
+
+  const handleRemoveShowtime = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      showtimes: prev.showtimes.filter((_, i) => i !== index),
     }));
   };
 
@@ -57,31 +75,15 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
     setError(null);
 
     try {
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key === 'amenities' || key === 'showtimes') {
-          formDataToSend.append(key, JSON.stringify(formData[key]));
-        } else if (key === 'posterImage' && formData[key]) {
-          formDataToSend.append('posterImage', formData[key]);
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
+      // **REPLACED BACKEND CALL WITH MOCK FUNCTION**
+      // The mockAddMovie function is now the only source of "data"
+      const data = await mockAddMovie(formData);
 
-      const response = await fetch('/api/admin/movies', {
-        method: 'POST',
-        body: formDataToSend,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add movie');
-      }
-
-      const data = await response.json();
       onSuccess(data);
       onClose();
     } catch (error) {
-      setError(error.message);
+      // The mock function should handle mock errors, but this ensures a fallback
+      setError(error.message); 
     } finally {
       setLoading(false);
     }
@@ -164,9 +166,9 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
             />
             {formData.posterImage && (
               <div className="image-preview">
-                <img 
-                  src={URL.createObjectURL(formData.posterImage)} 
-                  alt="Poster preview" 
+                <img
+                  src={URL.createObjectURL(formData.posterImage)}
+                  alt="Poster preview"
                   style={{ maxWidth: '200px', marginTop: '10px' }}
                 />
               </div>
@@ -228,6 +230,32 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
             </div>
           </div>
 
+          <div className="form-group">
+            <label>Showtimes</label>
+            <div className="amenities-input">
+              <input
+                type="datetime-local"
+                value={newShowtime}
+                onChange={(e) => setNewShowtime(e.target.value)}
+                placeholder="Add a showtime"
+              />
+              <button type="button" onClick={handleAddShowtime}>Add</button>
+            </div>
+            <div className="amenities-list">
+              {formData.showtimes.map((showtime, index) => (
+                <span key={index} className="amenity-tag">
+                  {new Date(showtime).toLocaleString()}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveShowtime(index)}
+                    className="remove-amenity"
+                  >
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+
           <div className="form-buttons">
             <button type="submit" disabled={loading}>
               {loading ? 'Adding...' : 'Add Movie'}
@@ -242,4 +270,4 @@ const AddMovieForm = ({ onClose, onSuccess }) => {
   );
 };
 
-export default AddMovieForm; 
+export default AddMovieForm;

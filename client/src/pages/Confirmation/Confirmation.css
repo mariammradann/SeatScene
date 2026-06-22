@@ -1,0 +1,306 @@
+/* Confirmation CSS - Premium Cinematic Style */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.confirmation-wrapper {
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh !important; /* Fill full viewport since #root padding is overridden to 0 */
+  background: radial-gradient(circle at top right, #382c4d 0%, #1a1b20 70%, #0d0e12 100%) !important;
+  color: #f3f4f6;
+  padding: 104px 24px 40px !important; /* 104px top padding to clear the 64px fixed header */
+  box-sizing: border-box !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.success-banner {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.success-check-icon {
+  font-size: 56px;
+  color: #10b981;
+  filter: drop-shadow(0 4px 10px rgba(16, 185, 129, 0.3));
+  margin-bottom: 16px;
+}
+
+.confirmation-title {
+  color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.confirmation-subtitle {
+  color: #99a2b3;
+  font-size: 14px;
+  margin: 0;
+  max-width: 420px;
+}
+
+/* --- Premium Cinema Ticket Card --- */
+.ticket-card-confirmed {
+  background: linear-gradient(135deg, rgba(35, 37, 46, 0.9) 0%, rgba(20, 21, 26, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  width: 100%;
+  max-width: 760px;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease;
+}
+
+.ticket-card-confirmed:hover {
+  transform: translateY(-2px);
+}
+
+/* Ticket Cutout Notches */
+.ticket-notch {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: #111216; /* matches wrapper background for cutout look */
+  border-radius: 50%;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ticket-notch.left {
+  left: -12px;
+}
+
+.ticket-notch.right {
+  right: -12px;
+}
+
+.ticket-inner {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  min-height: 180px;
+}
+
+/* Left part (Main details) */
+.ticket-main {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ticket-tag {
+  background: rgba(123, 31, 162, 0.1);
+  color: #ab47bc;
+  border: 1px solid rgba(123, 31, 162, 0.25);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.ticket-id {
+  font-size: 11px;
+  color: #718096;
+  font-weight: 600;
+}
+
+.ticket-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.5px;
+}
+
+.ticket-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ticket-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ticket-icon {
+  color: #ab47bc;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.item-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.item-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.seats-color {
+  color: #ab47bc;
+  font-weight: 600;
+}
+
+/* Right part (Barcode and price) */
+.ticket-aside {
+  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.01);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-container {
+  text-align: center;
+}
+
+.price-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.price-val {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+/* Simulated barcode graphics */
+.barcode-simulation {
+  display: flex;
+  align-items: flex-end;
+  height: 48px;
+  width: 100%;
+  max-width: 120px;
+  gap: 3px;
+  opacity: 0.7;
+}
+
+.barcode-simulation .bar {
+  flex-grow: 1;
+  background-color: #ffffff;
+  height: 100%;
+}
+
+.barcode-simulation .bar.font-thin {
+  max-width: 1px;
+}
+
+.barcode-simulation .bar.font-thick {
+  max-width: 4px;
+}
+
+/* --- Premium Confirm Button --- */
+.actions-container {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  justify-content: center;
+}
+
+.confirm-btn-premium {
+  background: #7b1fa2;
+  color: #ffffff;
+  border: none;
+  padding: 14px 44px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 20px rgba(123, 31, 162, 0.25);
+}
+
+.confirm-btn-premium:hover {
+  background: #9c27b0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(123, 31, 162, 0.35);
+}
+
+.btn-chevron {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.confirm-btn-premium:hover .btn-chevron {
+  transform: translateX(3px);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .ticket-inner {
+    grid-template-columns: 1fr;
+  }
+  
+  .ticket-main {
+    border-right: none;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    padding: 24px;
+  }
+  
+  .ticket-aside {
+    padding: 24px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .price-container {
+    text-align: left;
+  }
+  
+  .barcode-simulation {
+    max-width: 100px;
+    height: 36px;
+  }
+  
+  .ticket-notch {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-details-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .confirmation-title {
+    font-size: 1.8rem;
+  }
+}
